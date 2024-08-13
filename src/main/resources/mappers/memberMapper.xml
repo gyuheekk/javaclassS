@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.javaclassS.dao.MemberDAO">
+	
+	<select id="getMemberIdCheck" resultType="com.spring.javaclassS.vo.MemberVO">
+		select * from member2 where mid = #{mid};
+	</select>
+	
+	<select id="getMemberNickCheck" resultType="com.spring.javaclassS.vo.MemberVO">
+		select * from member2 where nickName = #{nickName};
+	</select>
+	
+	<select id="getMemberNameCheck" resultType="com.spring.javaclassS.vo.MemberVO">
+		select * from member2 where name = #{name};
+	</select>
+	
+	<!-- <select id="getMemberList" resultType="com.spring.javaclassS.vo.MemberVO">
+		<if test="level == 0">
+			select * from member2 order by nickName;
+		</if>
+		<if test="level != 0">
+			select * from member2 where userInfor = '공개' order by nickName;
+		</if>
+	</select> -->
+	
+	<select id="getMemberList" resultType="com.spring.javaclassS.vo.MemberVO">
+		select * from member2 <if test="level != 0"> where userInfor = '공개' </if> order by nickName;
+	</select>
+	
+	<select id="getMemberNickNameEmailCheck" resultType="com.spring.javaclassS.vo.MemberVO">
+		select * from member2 where nickName = #{nickName} and email = #{email} limit 1;
+	</select>
+	
+	<select id="getQrCodeLoginCheck" resultType="String">
+		select publishDate from qrCode where mid = #{mid} and name = #{qrCodeToken} order by idx desc limit 1;
+	</select>
+	
+	
+	<insert id="setMemberJoin">
+		insert into member2 values (default,#{vo.mid},#{vo.pwd},#{vo.nickName},#{vo.name},#{vo.gender},#{vo.birthday},#{vo.tel},#{vo.address},#{vo.email},#{vo.homePage},#{vo.job},#{vo.hobby},#{vo.photo},#{vo.content},#{vo.userInfor},default,default,default,default,default,default,default);
+	</insert>
+	
+	<insert id="setKakaoMemberInput">
+		insert into member2 (mid, pwd, nickName, email, name, level) values (#{mid}, #{pwd}, #{nickName}, #{email}, #{nickName}, 2);
+	</insert>
+	
+	<insert id="setQrCodeLogin">
+	  insert into qrCode values (default,#{mid},#{qrCodeToken},"","","","",0,0,#{today},"");
+	</insert>
+	
+	
+	<update id="setMemberPasswordUpdate">
+		update member2 set pwd = #{pwd} where mid = #{mid};
+	</update>
+	
+	<update id="setMemberInforUpdate">
+		update member2 set visitCnt=visitCnt+1, lastDate=now(), todayCnt=todayCnt+1, point=#{point} where mid=#{mid};
+	</update>
+	
+	<update id="setPwdChangeOk">
+		update member2 set pwd = #{pwd} where mid = #{mid};
+	</update>
+	
+	<update id="setMemberUpdate">
+		update member2 set nickName = #{vo.nickName}, name = #{vo.name}, email = #{vo.email}, gender = #{vo.gender}, birthday = #{vo.birthday}, tel = #{vo.tel}, address = #{vo.address}, homePage = #{vo.homePage}, job = #{vo.job}, hobby = #{vo.hobby}, content = #{vo.content}, userInfor = #{vo.userInfor}, photo = #{vo.photo} where mid=#{vo.mid};
+	</update>
+	
+</mapper>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.javaclassS.dao.CalendarDAO" >
+	<select id="calendarListAll" resultType="com.spring.javaclassS.vo.CalendarVO">
+	    select * from calendar;
+	</select>
+	
+	<insert id="calendarInput">
+	    insert into calendar values(default, #{vo.title}, #{vo.startTime}, #{vo.endTime}, #{vo.allDay});
+	</insert>
+	
+	<delete id="calendarDeleteTrue">
+	    delete from calendar where title = #{title} and  startTime = #{startTime}
+	</delete>
+	
+	<delete id="calendarDelete">
+	    delete from calendar where title = #{title} and  startTime = #{startTime} and endTime = #{endTime} and allDay=#{allDay}
+	</delete>
+	
+	<update id="calendarUpdate">
+	    update calendar set title=#{vo.title}, startTime=#{vo.startTime}, endTime=#{vo.endTime}, allDay=#{vo.allDay} where idx=#{vo.idx}
+	</update>
+</mapper>

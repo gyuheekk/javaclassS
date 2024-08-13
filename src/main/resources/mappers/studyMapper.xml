@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.javaclassS.dao.StudyDAO">
+	
+	<select id="getUserMidSearch" resultType="com.spring.javaclassS.vo.UserVO">
+		select * from user where mid = #{mid};
+	</select>
+	
+	<select id="getUserMidList" resultType="com.spring.javaclassS.vo.UserVO">
+		select * from user where mid like concat('%',#{mid},'%') order by mid;
+	</select>
+	
+	<select id="getListCrimeDate" resultType="com.spring.javaclassS.vo.CrimeVO">
+		select * from crime where year = #{year} order by police;
+	</select>
+	
+	<select id="getYearPoliceCheck" resultType="com.spring.javaclassS.vo.CrimeVO">
+		select * from crime where year = #{year} and police like concat(#{police},'%') order by police ${yearOrder};
+	</select>
+	
+	<select id="getAnalyzeTotal" resultType="com.spring.javaclassS.vo.CrimeVO">
+		select year,sum(robbery) as totRobbery,sum(murder) as totMurder,sum(theft) as totTheft,sum(violence) as totViolence,
+					 avg(robbery) as avgRobbery,avg(murder) as avgMurder,avg(theft) as avgTheft,avg(violence) as avgViolence
+					 from crime where year = #{year} and police like concat(#{police},'%');
+	</select>
+	
+	<select id="getKakaoAddressSearch"  resultType="com.spring.javaclassS.vo.KakaoAddressVO">
+	  select * from kakaoAddress where address = #{address};
+	</select>
+	
+	<select id="getKakaoAddressList" resultType="com.spring.javaclassS.vo.KakaoAddressVO">
+	  select * from kakaoAddress order by address;
+	</select>
+	
+	<select id="getQrCodeSearch" resultType="com.spring.javaclassS.vo.QrCodeVO">
+		select * from qrCode where qrCodeName = #{qrCodeName};
+	</select>
+	
+	<select id="getTransactionList" resultType="com.spring.javaclassS.vo.TransactionVO">
+		select * from user order by idx desc;
+	</select>
+	
+	<select id="getTransactionList2" resultType="com.spring.javaclassS.vo.TransactionVO">
+		select * from user2 order by mid;
+	</select>
+	
+	
+	<insert id="setSaveCrimeDate">
+		insert into crime values (default,#{vo.year},#{vo.police},#{vo.robbery},#{vo.theft},#{vo.murder},#{vo.violence});		
+	</insert>
+	
+	<insert id="setKakaoAddressInput">
+	  insert into kakaoAddress values (#{vo.address}, #{vo.latitude}, #{vo.longitude});
+	</insert>
+	
+	<insert id="setTransactionUserInput">
+	  insert into user values (default,#{vo.mid},#{vo.name},#{vo.age},#{vo.address});
+	</insert>
+	
+	<insert id="setQrCodeCreate">
+	  insert into qrCode values (default,#{vo.mid},#{vo.name},#{vo.email},#{vo.movieName},#{vo.movieDate},#{vo.movieTime},#{vo.movieAdult},#{vo.movieChild},#{vo.publishDate},#{vo.qrCodeName});
+	</insert>
+	
+	<insert id="setTransactionUser1Input">
+	  insert into user values (default,#{vo.mid},#{vo.name},#{vo.age},#{vo.address});
+	</insert>
+	
+	<insert id="setTransactionUser2Input">
+	  insert into user2 values (#{vo.mid},#{vo.job});
+	</insert>
+	
+	<insert id="setTransactionUserTotalInput">
+	  insert into user values (default,#{vo.mid},#{vo.name},#{vo.age},#{vo.address});
+	  insert into user2 values (#{vo.mid},#{vo.job});
+	</insert>
+	
+	<delete id="setdeleteCrimeDate">
+		delete from crime where year = #{year}; 
+	</delete>
+	
+	<delete id="setKakaoAddressDelete">
+	  delete from kakaoAddress where address = #{address};
+	</delete>
+	
+</mapper>

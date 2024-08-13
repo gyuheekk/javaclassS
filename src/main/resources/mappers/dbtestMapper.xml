@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.javaclassS.dao.DbtestDAO">
+	
+	<select id="getDbtestList" resultType="com.spring.javaclassS.vo.UserVO">
+		select * from user order by idx desc;
+	</select>
+	
+	<select id="getDbtestSearch" resultType="com.spring.javaclassS.vo.UserVO">
+		select * from user where mid like concat('%',#{mid},'%') order by idx desc;
+	</select>
+	
+	<select id="getUserIdCheck" resultType="com.spring.javaclassS.vo.UserVO">
+		select * from user where mid = #{mid};
+	</select>
+	
+	<select id="getMemberArrayList" resultType="String">
+		select mid from user;
+	</select>
+	
+	<insert id="setDbtestInputOk">
+	  insert into user values (default, #{vo.mid}, #{vo.name}, #{vo.age}, #{vo.address});
+	</insert>
+	
+	
+	<update id="setDbtestUpdateOk" parameterType="com.spring.javaclassS.vo.UserVO">
+	  update user set mid=#{mid}, name=#{name}, age=#{age}, address=#{address} where idx=#{idx};
+	</update>
+	
+	<delete id="setDbtestDelete">
+	  delete from user where idx = #{idx};
+	</delete>
+	
+</mapper>
